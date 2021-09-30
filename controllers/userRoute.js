@@ -63,15 +63,41 @@ exports.loginUser = async (req, res) => {
 
 }
 
+
+ const NewValidUser = (req, res, next) => {
+  var token = req.header('auth');
+  console.log(token)
+  if (!token) {
+      return res.status(401).send("Access Denied")
+  }
+  jwt.verify(token, 'secretkey', (err, payload) => {
+      if (err) {
+          console.log(err)
+          return res.status(401).json("Invalid Token")
+      }
+      const id = payload.id
+      User.findByPk(id)
+          .then((data) => {
+              req.user = data
+              next()
+          })
+  })
+}
+
+exports.NewValidUser = NewValidUser
+
 exports.addbook = async (req, res) => {
 
+  const userid =await req.user.id
+  console.log(req.user.id)
   const user = {
-    bookname: req.body.name,
-    authorname: req.body.email,
-    prize: req.body.prize
+    bookname: req.body.bookname,
+    authorname: req.body.authorname,
+    prize: req.body.prize,
+    userid:req.user.id
   };
 
-  Book.create(req.body)
+  Book.create(user)
     .then((data) => {
       console.log("test")
       res.json(data)
@@ -90,8 +116,9 @@ exports.addbook = async (req, res) => {
 exports.getAll = (req, res) => {
   const title = req.query.title;
   // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+  var userId =req.user.id
 
-  Book.findAll({ where: {} })
+  Book.findAll({ where: {userid:userId} })
     .then(data => {
       res.send(data);
     })
