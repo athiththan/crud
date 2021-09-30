@@ -10,6 +10,8 @@ module.exports = app => {
     router.post("/addbooks",tutorials.addbook)
    
     router.get("/getAll",tutorials.getAll)
+
+    router.post("/update/:id", tutorials.updatebyid);
    
     router.delete("/delete/:id",tutorials.delete)
 
