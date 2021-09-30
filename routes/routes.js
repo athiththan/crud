@@ -11,5 +11,7 @@ module.exports = app => {
    
     router.get("/getAll",tutorials.getAll)
    
+    router.delete("/delete/:id",tutorials.delete)
+
     app.use('/api', router);
    } 
