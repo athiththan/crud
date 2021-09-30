@@ -7,13 +7,13 @@ module.exports = app => {
 
     router.post("/login", tutorials.loginUser);
 
-    router.post("/addbooks",tutorials.addbook)
+    router.post("/addbooks",tutorials.NewValidUser,tutorials.addbook)
    
-    router.get("/getAll",tutorials.getAll)
+    router.get("/getAll",tutorials.NewValidUser,tutorials.getAll)
 
-    router.post("/update/:id", tutorials.updatebyid);
+    router.post("/update/:id",tutorials.NewValidUser, tutorials.updatebyid);
    
-    router.delete("/delete/:id",tutorials.delete)
+    router.delete("/delete/:id",tutorials.NewValidUser,tutorials.delete)
 
     app.use('/api', router);
    } 
